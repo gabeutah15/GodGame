@@ -14,6 +14,11 @@ public class StrateCam : MonoBehaviour
     public CursorMode cursorMode = CursorMode.Auto;
     public Vector2 hotSpot = Vector2.zero;
     public Vector2 hotSpotRight = new Vector2(33, 0);
+    [SerializeField]
+    LayerMask layerMaskGround;
+    [SerializeField]
+    bool newRotation;
+
 
     //end added
 
@@ -55,6 +60,10 @@ public class StrateCam : MonoBehaviour
     // private fields
     private float currentCameraDistance;
     private Vector3 lastMousePos;
+    private Vector3 lastHandPos;
+    //private Vector3 handHitPoint;
+
+
     private Vector3 lastPanSpeed = Vector3.zero;
     private Vector3 goingToCameraTarget = Vector3.zero;
     private bool doingAutoMovement = false;
@@ -66,6 +75,8 @@ public class StrateCam : MonoBehaviour
     {
         currentCameraDistance = minZoomDistance + ((maxZoomDistance - minZoomDistance) / 2.0f);
         lastMousePos = Vector3.zero;
+        lastHandPos = Vector3.zero;
+
         doubleClickDetector = GetComponent<DoubleClickDetector>();
         Camera.main.transform.rotation = Quaternion.Euler(initialCameraRotationX, initialCameraRotationY, 1);
         Cursor.lockState = CursorLockMode.Confined;//i dunno if this should be in start or update but it has to be in a function
@@ -76,7 +87,6 @@ public class StrateCam : MonoBehaviour
     {
         if (allowDoubleClickMovement)
         {
-            //doubleClickDetector.Update();
             UpdateDoubleClick();
         }
         UpdatePanning();
@@ -85,6 +95,16 @@ public class StrateCam : MonoBehaviour
         UpdatePosition();
         UpdateAutoMovement();
         lastMousePos = Input.mousePosition;
+
+
+
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, 1000, layerMaskGround))
+        {
+            lastHandPos = hit.point;
+        }
+
     }
 
     public void GoTo(Vector3 position)
@@ -120,8 +140,6 @@ public class StrateCam : MonoBehaviour
             }
         }
     }
-
-
 
     private void UpdatePanning()
     {
@@ -246,6 +264,7 @@ public class StrateCam : MonoBehaviour
 
     private void UpdateRotation()
     {
+
         float deltaAngleH = 0.0f;
         float deltaAngleV = 0.0f;
 
@@ -270,20 +289,32 @@ public class StrateCam : MonoBehaviour
 
         if (useMouseInput)
         {
-            if (Input.GetMouseButton(1) /*&& EntitySelector._selectedUnits.Count == 0*/ /*&& !Input.GetKey(KeyCode.LeftShift)*/)
-            {//don't need above commented out NOTshift key cuz not using click and drag to pan
-                var deltaMousePos = (Input.mousePosition - lastMousePos);
+            if (Input.GetMouseButton(1))
+            {
+
+                Vector3 deltaMousePos = (Input.mousePosition - lastMousePos);
+
                 deltaAngleH += deltaMousePos.x * mouseRotationMultiplier;
                 deltaAngleV -= deltaMousePos.y * mouseRotationMultiplier;
+
+
+            }
+
+            if (Input.GetMouseButtonDown(1))
+            {
+                objectToFollow = WorldHand.handInstance;
+            }
+            if (Input.GetMouseButtonUp(1))
+            {
+                objectToFollow = null;
             }
         }
 
-        // Turns out this shouldn't be scaling by deltatime at all! This should only be dependent on how far the mouse has moved, deltatime is irrelevant.
-        // THe original stratecam is incorrect here. They are scaling by deltatime, however this (counter-intuitively) actually makes the rotation code framerate-dependent instead of framerate-independent
         transform.SetLocalEulerAngles(
             Mathf.Min(80.0f, Mathf.Max(5.0f, transform.localEulerAngles.x + deltaAngleV * 0.02f * rotationSpeed)),
             transform.localEulerAngles.y + deltaAngleH * 0.02f * rotationSpeed
         );
+
     }
 
     private void UpdateZooming()

@@ -600,7 +600,7 @@ GameObject:
   - component: {fileID: 371242579}
   - component: {fileID: 371242581}
   - component: {fileID: 371242580}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Terrain_0_0_d0547428-f5fd-46d1-9f05-801c35022075
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1911,6 +1911,7 @@ GameObject:
   - component: {fileID: 1588371208}
   - component: {fileID: 1588371212}
   - component: {fileID: 1588371211}
+  - component: {fileID: 1588371213}
   m_Layer: 0
   m_Name: Main Camera StrateCam
   m_TagString: MainCamera
@@ -1976,13 +1977,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1588371207}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 138.7, y: 91.8, z: 91}
+  m_LocalRotation: {x: 0.25661966, y: -0, z: -0, w: 0.9665125}
+  m_LocalPosition: {x: 173.52, y: 63.87, z: 15.98}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 29.739, y: 0, z: 0}
 --- !u!114 &1588371211
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2014,10 +2015,14 @@ MonoBehaviour:
   cursorMode: 0
   hotSpot: {x: 0, y: 0}
   hotSpotRight: {x: 33, y: 0}
+  layerMaskGround:
+    serializedVersion: 2
+    m_Bits: 256
+  newRotation: 0
   initialCameraRotationX: 35
   initialCameraRotationY: -35
   terrain: {fileID: 371242581}
-  panSpeed: 15
+  panSpeed: 30
   zoomSpeed: 1000
   rotationSpeed: 50
   mousePanMultiplier: 0.1
@@ -2027,7 +2032,7 @@ MonoBehaviour:
   maxZoomDistance: 450
   smoothingFactor: 0.1
   goToSpeed: 0.1
-  useKeyboardInput: 1
+  useKeyboardInput: 0
   useMouseInput: 1
   adaptToTerrainHeight: 1
   increaseSpeedWhenZoomedOut: 1
@@ -2040,6 +2045,22 @@ MonoBehaviour:
   edgeMargin: 0
   objectToFollow: {fileID: 0}
   cameraTarget: {x: 0, y: 0, z: 0}
+--- !u!114 &1588371213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1588371207}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 709b9df1fb55e1245b9793242b4599d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  layerMaskGround:
+    serializedVersion: 2
+    m_Bits: 256
+  handPrefab: {fileID: 9093869836183793119, guid: 01eecdca41db01146b1ffe690a12a239, type: 3}
 --- !u!1 &1711753653
 GameObject:
   m_ObjectHideFlags: 0
