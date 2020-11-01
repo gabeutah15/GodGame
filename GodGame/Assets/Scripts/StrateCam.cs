@@ -61,6 +61,8 @@ public class StrateCam : MonoBehaviour
 
     // private fields
     private float currentCameraDistance;
+    private float currentDistanceToHand;
+
     private Vector3 lastMousePos;
     //private Vector3 handHitPoint;
 
@@ -99,6 +101,8 @@ public class StrateCam : MonoBehaviour
         UpdatePosition();
         UpdateAutoMovement();
         lastMousePos = Input.mousePosition;
+
+        currentDistanceToHand = Vector3.Distance(this.transform.position, WorldHand.Hand.transform.position);
     }
 
     public void GoTo(Vector3 position)
@@ -338,7 +342,10 @@ public class StrateCam : MonoBehaviour
             Camera.main.orthographicSize -= scroll;
         }
         var zoomedOutRatio = correctZoomingOutRatio ? (currentCameraDistance - minZoomDistance) / (maxZoomDistance - minZoomDistance) : 0.0f;
-        currentCameraDistance = Mathf.Max(minZoomDistance/*objectToFollow? doubledMinZoom : normalMinZoom*/, Mathf.Min(maxZoomDistance, currentCameraDistance + deltaZoom * Time.unscaledDeltaTime * zoomSpeed * (zoomedOutRatio * 2.0f + 1.0f)));
+        //currentCameraDistance = objectToFollow? /*Vector3.Distance(this.transform.position, objectToFollow.transform.position)*/ /*must be something like current distance to hand so don't zoom anymore? but still moving to it*/ :
+        //    Mathf.Max(minZoomDistance, Mathf.Min(maxZoomDistance, currentCameraDistance + deltaZoom * Time.unscaledDeltaTime * zoomSpeed * (zoomedOutRatio * 2.0f + 1.0f)));
+
+        currentCameraDistance = Mathf.Max(minZoomDistance, Mathf.Min(maxZoomDistance, currentCameraDistance + deltaZoom * Time.unscaledDeltaTime * zoomSpeed * (zoomedOutRatio * 2.0f + 1.0f)));
     }
 
     private void UpdatePosition()
@@ -346,12 +353,24 @@ public class StrateCam : MonoBehaviour
         if (objectToFollow != null)
         {
             cameraTarget = Vector3.Lerp(cameraTarget, objectToFollow.transform.position, goToSpeed);
+            //cameraTarget = objectToFollow.transform.position;
         }
 
         cameraTarget.x = Mathf.Clamp(cameraTarget.x, 0 - edgeMargin, terrain.terrainData.size.x + edgeMargin);
         cameraTarget.z = Mathf.Clamp(cameraTarget.z, 0 - edgeMargin, terrain.terrainData.size.z + edgeMargin);
         transform.position = cameraTarget;
-        transform.Translate(Vector3.back * currentCameraDistance);
+
+        Debug.Log(currentDistanceToHand);
+
+        if (!objectToFollow)
+        {
+            transform.Translate(Vector3.back * currentCameraDistance);
+        }
+        else
+        {
+            //currentCameraDistance = maxZoomDistance;
+            transform.Translate(Vector3.back * currentCameraDistance);//currentDistanceToHand
+        }
 
         if (adaptToTerrainHeight && terrain != null)
         {
