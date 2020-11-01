@@ -26,7 +26,7 @@ public class PickUpable : MonoBehaviour
     {
         if (hasHitGround)
         {
-            if(rb.velocity.sqrMagnitude < .01)//maybe change to less than epsilon or something later
+            if(rb.velocity.sqrMagnitude < .2)//maybe change to less than epsilon or something later
             {
                 pickupManager.ThrowableHasHitGroundAndStopped(this.gameObject);
             }

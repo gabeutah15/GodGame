@@ -8,10 +8,16 @@ public class PickupManager : MonoBehaviour
     GameObject currentPickedUpOriginalObject;
     GameObject currentPickedUpPickupableObject;
     Vector3 throwVector = Vector3.zero;
+    Vector3 throwVectorTest = Vector3.zero;
+
     private Vector3 lastMousePos;
     bool hasReleasedInitialGrabClick = false;
     [HideInInspector]
     public Dictionary<GameObject, GameObject> pickupDictionary = new Dictionary<GameObject, GameObject>();
+    [SerializeField]
+    private float addedYVelocityScalar = 5;
+    [SerializeField]
+    private float throwStrength = 40;
 
     //***you can pickup another peasant before teh first one has stopped, which is problem for reincarnating the 
     //original as a navmeshagent
@@ -49,6 +55,8 @@ public class PickupManager : MonoBehaviour
     //if not high enough or enough force applied then should be able to set down and never have to be thrown and wait
     //for stop
 
+    //currently this will not let you pick up again until the object inquestion has stoped and converted back into navmeshagent, which does not feel right
+
     public void ThrowableHasHitGroundAndStopped(GameObject throwAble)
     {
         GameObject original = pickupDictionary[throwAble];
@@ -71,13 +79,20 @@ public class PickupManager : MonoBehaviour
 
             if (Input.GetMouseButtonUp(0))
             {
+                throwVector = Camera.main.transform.TransformDirection(throwVector);
+                throwVector = new Vector3(throwVector.x, 0, throwVector.z);
+                float horizontalMagnitude = throwVector.magnitude;
+                throwVector += new Vector3(0, addedYVelocityScalar * horizontalMagnitude, 0);
+                throwVector *= throwStrength;
+
                 WorldHand.hasObjectPickedUp = false;
-                currentPickedUpPickupableObject.transform.SetParent(null);
-                Rigidbody rb = currentPickedUpPickupableObject.GetComponent<Rigidbody>();
-                rb.constraints = RigidbodyConstraints.None;
-                throwVector = throwVector.normalized * 30;
-                currentPickedUpPickupableObject.GetComponent<Rigidbody>().AddForce(throwVector, ForceMode.Impulse);
-                Debug.Log(throwVector);
+                if (currentPickedUpPickupableObject)//sometimes goes in here again after throwing and then pickupable is null, order of click ups and downs and hasreleased and so on still a little buggy
+                {
+                    currentPickedUpPickupableObject.transform.SetParent(null);
+                    Rigidbody rb = currentPickedUpPickupableObject.GetComponent<Rigidbody>();
+                    rb.constraints = RigidbodyConstraints.None;
+                    currentPickedUpPickupableObject.GetComponent<Rigidbody>().AddForce(throwVector, ForceMode.Impulse);
+                }
                 throwVector = Vector3.zero;
                 hasReleasedInitialGrabClick = false;
             }
