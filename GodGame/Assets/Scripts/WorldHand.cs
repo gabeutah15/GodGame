@@ -16,7 +16,7 @@ public class WorldHand : MonoBehaviour
     Vector3 positionOfLastRightCick = Vector3.zero;
     [SerializeField]
     float lerpSpeed = 0.5f;
-    private float heightIncrease = 1;
+    public static float heightIncrease = 1;
     [HideInInspector]
     public static bool hasObjectPickedUp;//dunno about just doing global variables for all hand stuff? maybe ok
     //because there is only one hand? what about multiplayer or vs other gods?
@@ -32,14 +32,14 @@ public class WorldHand : MonoBehaviour
     {
         //bool hasFinishedDraggingButNotGivenNewCommand;
         //below should not be in update, just set it once when you pick up stuff
-        if (hasObjectPickedUp)
-        {
-            heightIncrease = 4;
-        }
-        else
-        {
-            heightIncrease = 1;
-        }
+        //if (hasObjectPickedUp)
+        //{
+        //    heightIncrease = 4;
+        //}
+        //else
+        //{
+        //    heightIncrease = 1;
+        //}
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;

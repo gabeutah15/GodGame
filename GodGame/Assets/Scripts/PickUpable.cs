@@ -7,6 +7,8 @@ public class PickUpable : MonoBehaviour
     Rigidbody rb;
     PickupManager pickupManager;
     private bool hasHitGround = false;
+    private float timer;
+    private float timeUntilCanHitGroundAgain = 0.2f;//added so not sometimes lose pickup as soon as pickup cuz not moving fast and still on ground
 
     private void Awake()
     {
@@ -24,7 +26,8 @@ public class PickUpable : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (hasHitGround)
+        timer += Time.deltaTime;
+        if (hasHitGround && timer >= timeUntilCanHitGroundAgain)
         {
             if(rb.velocity.sqrMagnitude < .2)//maybe change to less than epsilon or something later
             {

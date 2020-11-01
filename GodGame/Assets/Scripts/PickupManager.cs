@@ -49,7 +49,10 @@ public class PickupManager : MonoBehaviour
         currentPickedUpPickupableObject = pickupAble;
         original.SetActive(false);
         pickupAble.transform.SetParent(WorldHand.Hand.transform);
+        pickupAble.transform.position = WorldHand.Hand.transform.position;
         WorldHand.hasObjectPickedUp = true;
+        WorldHand.heightIncrease = 4.0f;
+
     }
 
     //if not high enough or enough force applied then should be able to set down and never have to be thrown and wait
@@ -86,6 +89,8 @@ public class PickupManager : MonoBehaviour
                 throwVector *= throwStrength;
 
                 WorldHand.hasObjectPickedUp = false;
+                WorldHand.heightIncrease = 1.0f;
+
                 if (currentPickedUpPickupableObject)//sometimes goes in here again after throwing and then pickupable is null, order of click ups and downs and hasreleased and so on still a little buggy
                 {
                     currentPickedUpPickupableObject.transform.SetParent(null);
