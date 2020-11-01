@@ -37,6 +37,8 @@ public class StrateCam : MonoBehaviour
     public float mouseZoomMultiplier = 5.0f;
 
     public float minZoomDistance = 20.0f;
+    private float normalMinZoom;
+    private float doubledMinZoom;
     public float maxZoomDistance = 200.0f;
     public float smoothingFactor = 0.1f;
     public float goToSpeed = 0.1f;
@@ -60,7 +62,6 @@ public class StrateCam : MonoBehaviour
     // private fields
     private float currentCameraDistance;
     private Vector3 lastMousePos;
-    private Vector3 lastHandPos;
     //private Vector3 handHitPoint;
 
 
@@ -73,13 +74,16 @@ public class StrateCam : MonoBehaviour
     // Use this for initialization
     public void Start()
     {
-        currentCameraDistance = minZoomDistance + ((maxZoomDistance - minZoomDistance) / 2.0f);
-        lastMousePos = Vector3.zero;
-        lastHandPos = Vector3.zero;
+        currentCameraDistance = minZoomDistance + ((maxZoomDistance - minZoomDistance) / 5.0f);
+        lastMousePos = this.transform.position;// Vector3.zero;
+        cameraTarget = this.transform.position;
+        Cursor.visible = false;
 
         doubleClickDetector = GetComponent<DoubleClickDetector>();
-        Camera.main.transform.rotation = Quaternion.Euler(initialCameraRotationX, initialCameraRotationY, 1);
+        //Camera.main.transform.rotation = Quaternion.Euler(initialCameraRotationX, initialCameraRotationY, 1);
         Cursor.lockState = CursorLockMode.Confined;//i dunno if this should be in start or update but it has to be in a function
+        normalMinZoom = minZoomDistance;
+        doubledMinZoom = 2 * minZoomDistance;
     }
 
     // Update is called once per frame
@@ -95,16 +99,6 @@ public class StrateCam : MonoBehaviour
         UpdatePosition();
         UpdateAutoMovement();
         lastMousePos = Input.mousePosition;
-
-
-
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, 1000, layerMaskGround))
-        {
-            lastHandPos = hit.point;
-        }
-
     }
 
     public void GoTo(Vector3 position)
@@ -115,10 +109,10 @@ public class StrateCam : MonoBehaviour
         objectToFollow = null;
     }
 
-    public void Follow(GameObject gameObjectToFollow)
-    {
-        objectToFollow = gameObjectToFollow;
-    }
+    //public void Follow(GameObject gameObjectToFollow)
+    //{
+    //    objectToFollow = gameObjectToFollow;
+    //}
 
     #region private functions
     private void UpdateDoubleClick()
@@ -303,6 +297,9 @@ public class StrateCam : MonoBehaviour
             if (Input.GetMouseButtonDown(1))
             {
                 objectToFollow = WorldHand.handInstance;
+                //set zoom to be distance from camera to worldhand so cannot use rotate to move?
+                //float distanceToHand = Vector3.Distance(this.transform.position, WorldHand.handInstance.transform.position);
+                //currentCameraDistance = Mathf.Max(minZoomDistance, Mathf.Min(maxZoomDistance, distanceToHand));
             }
             if (Input.GetMouseButtonUp(1))
             {
@@ -340,7 +337,7 @@ public class StrateCam : MonoBehaviour
             Camera.main.orthographicSize -= scroll;
         }
         var zoomedOutRatio = correctZoomingOutRatio ? (currentCameraDistance - minZoomDistance) / (maxZoomDistance - minZoomDistance) : 0.0f;
-        currentCameraDistance = Mathf.Max(minZoomDistance, Mathf.Min(maxZoomDistance, currentCameraDistance + deltaZoom * Time.unscaledDeltaTime * zoomSpeed * (zoomedOutRatio * 2.0f + 1.0f)));
+        currentCameraDistance = Mathf.Max(minZoomDistance/*objectToFollow? doubledMinZoom : normalMinZoom*/, Mathf.Min(maxZoomDistance, currentCameraDistance + deltaZoom * Time.unscaledDeltaTime * zoomSpeed * (zoomedOutRatio * 2.0f + 1.0f)));
     }
 
     private void UpdatePosition()

@@ -14,6 +14,8 @@ public class WorldHand : MonoBehaviour
     public static GameObject handInstance;
     Vector3 zAdded = new Vector3(0,0,0);
     Vector3 positionOfLastRightCick = Vector3.zero;
+    [SerializeField]
+    float lerpSpeed = 0.5f;
 
     // Start is called before the first frame update
     void Start()
@@ -24,6 +26,7 @@ public class WorldHand : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        bool hasFinishedDraggingButNotGivenNewCommand;
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
@@ -41,7 +44,8 @@ public class WorldHand : MonoBehaviour
             }
             else
             {
-                handInstance.transform.position = hit.point + zAdded;
+                //handInstance.transform.position = hit.point + zAdded;
+                handInstance.transform.position = Vector3.Lerp(handInstance.transform.position, hit.point + zAdded, lerpSpeed);
             }
         }
 
