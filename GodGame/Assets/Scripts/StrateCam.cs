@@ -81,7 +81,7 @@ public class StrateCam : MonoBehaviour
 
         doubleClickDetector = GetComponent<DoubleClickDetector>();
         //Camera.main.transform.rotation = Quaternion.Euler(initialCameraRotationX, initialCameraRotationY, 1);
-        Cursor.lockState = CursorLockMode.Confined;//i dunno if this should be in start or update but it has to be in a function
+        //Cursor.lockState = CursorLockMode.Confined;//don't do this because need to take cursor off screento drag and move
         normalMinZoom = minZoomDistance;
         doubledMinZoom = 2 * minZoomDistance;
     }
@@ -220,13 +220,14 @@ public class StrateCam : MonoBehaviour
                 moveVector.z += screenEdgeSpeed * shiftMulti;
             }
         }
-
+        
         if (useMouseInput)
         {
             if (Input.GetMouseButton(2) /*&& Input.GetKey(KeyCode.LeftShift)*/)
             {
                 Vector3 deltaMousePos = (Input.mousePosition - lastMousePos);
                 moveVector += new Vector3(-deltaMousePos.x, 0, -deltaMousePos.y) * mousePanMultiplier;
+                
             }
         }
 
@@ -296,7 +297,7 @@ public class StrateCam : MonoBehaviour
 
             if (Input.GetMouseButtonDown(1))
             {
-                objectToFollow = WorldHand.handInstance;
+                objectToFollow = WorldHand.Hand;
                 //set zoom to be distance from camera to worldhand so cannot use rotate to move?
                 //float distanceToHand = Vector3.Distance(this.transform.position, WorldHand.handInstance.transform.position);
                 //currentCameraDistance = Mathf.Max(minZoomDistance, Mathf.Min(maxZoomDistance, distanceToHand));
