@@ -360,7 +360,7 @@ public class StrateCam : MonoBehaviour
         cameraTarget.z = Mathf.Clamp(cameraTarget.z, 0 - edgeMargin, terrain.terrainData.size.z + edgeMargin);
         transform.position = cameraTarget;
 
-        Debug.Log(currentDistanceToHand);
+        //Debug.Log(currentDistanceToHand);
 
         if (!objectToFollow)
         {
