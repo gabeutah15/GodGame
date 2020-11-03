@@ -31,6 +31,20 @@ public class PickupManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (WorldHand.hasObjectPickedUp)//WorldHand.hasObjectPickedUp
+        {
+            timerAfterThrow = 0;
+        }
+        else
+        {
+            timerAfterThrow += Time.deltaTime;
+        }
+
+        if((timerAfterThrow > 0.2f) && !WorldHand.handCollider.enabled)
+        {
+            WorldHand.handCollider.enabled = true;
+        }
+
         //if (WorldHand.hasObjectPickedUp)
         //{
             DetectHoldAndReleaseMouse();
@@ -106,7 +120,7 @@ public class PickupManager : MonoBehaviour
         //Debug.Log("hit ground and stopped");
     }
 
-    private float timerAfterInitialReleaseAfterPickup = 0f;
+    private float timerAfterThrow = 0f;
 
     private void DetectHoldAndReleaseMouse()
     {
@@ -151,7 +165,7 @@ public class PickupManager : MonoBehaviour
                 }
                 throwVector = Vector3.zero;
                 hasReleasedInitialGrabClick = false;
-                WorldHand.handCollider.enabled = true;
+                
             }
         }
 

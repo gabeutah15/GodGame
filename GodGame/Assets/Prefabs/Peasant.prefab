@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 382055823842523354}
   - component: {fileID: 382055823842523355}
   - component: {fileID: 382055823842523349}
+  - component: {fileID: 705101688911976657}
   m_Layer: 0
   m_Name: Peasant
   m_TagString: Untagged
@@ -146,6 +147,18 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &705101688911976657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 382055823842523353}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48dc066c3a3bfdf4489d5217638a5569, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &382055824042060191
 GameObject:
   m_ObjectHideFlags: 0
