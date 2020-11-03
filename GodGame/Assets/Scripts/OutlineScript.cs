@@ -46,8 +46,19 @@ public class OutlineScript : MonoBehaviour
                 rendered = false;
                 //thisRenderer.enabled = false;
                 //InstantiateThrowableAndGrab();
-                GameObject pickUpabale = Instantiate(throwableVersionOfObject, this.transform.position, this.transform.rotation);
-                pickupManager.PickupNewObject(this.GetComponentInParent<Moveable>().gameObject, pickUpabale);
+
+                if (this.GetComponentInParent<PickupableNavMeshAgent>())
+                {
+                    GameObject pickUpabale = Instantiate(throwableVersionOfObject, this.transform.position, this.transform.rotation);
+                    pickupManager.PickupNewNavMeshObject(this.GetComponentInParent<PickupableNavMeshAgent>().gameObject, pickUpabale);
+                }
+
+                if (this.GetComponentInParent<PickupablePhysicsObject>())
+                {
+                    pickupManager.PickupPhysicsObject(this.GetComponentInParent<PickupablePhysicsObject>().gameObject);
+                    //GameObject pickUpabale = Instantiate(throwableVersionOfObject, this.transform.position, this.transform.rotation);
+                    //pickupManager.PickupNewObject(this.GetComponentInParent<PickupableNavMeshAgent>().gameObject, pickUpabale);
+                }
             }
         }
         outlineRenderer.enabled = rendered;
@@ -118,9 +129,30 @@ public class OutlineScript : MonoBehaviour
         }
     }
 
+    //for physics objects that need a rigidbody on the parent and so have a trigger to collider with outliner
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("GodHand"))
+        {
+            OutlineScript outline = transform.GetComponent<OutlineScript>();
+            if (outline)
+            {
+                outline.rendered = true;
+            }
+        }
+    }
+
     private void OnCollisionExit(Collision collision)
     {
         if (collision.gameObject.CompareTag("GodHand"))
+        {
+            transform.GetComponent<OutlineScript>().rendered = false;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("GodHand"))
         {
             transform.GetComponent<OutlineScript>().rendered = false;
         }

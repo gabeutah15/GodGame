@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PickUpable : MonoBehaviour
+public class ThrownVersionOfNavMeshAgent : MonoBehaviour
 {
     Rigidbody rb;
     PickupManager pickupManager;
@@ -31,7 +31,7 @@ public class PickUpable : MonoBehaviour
         {
             if(rb.velocity.sqrMagnitude < .2)//maybe change to less than epsilon or something later
             {
-                pickupManager.ThrowableHasHitGroundAndStopped(this.gameObject);
+                pickupManager.ThrowableVersionOfNavMeshAgentHasHitGroundAndStopped(this.gameObject);
             }
         }
     }

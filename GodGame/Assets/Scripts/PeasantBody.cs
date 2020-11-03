@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Peasant : MonoBehaviour
+public class PeasantBody : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
