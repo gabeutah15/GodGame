@@ -98,7 +98,7 @@ public class PickupManager : MonoBehaviour
         //pickupNavMeshBodyAndRelatedDictionary.Add(pickupAble, original);
         currentPickedUpObject = pickupAble;
         pickupAble.transform.SetParent(WorldHand.Hand.transform);
-        pickupAble.transform.position = WorldHand.Hand.transform.position;
+        //pickupAble.transform.position = WorldHand.Hand.transform.position;//is setting this causing a feedback loop between the normalized to surface hand position and the parented physics object?
         WorldHand.hasObjectPickedUp = true;
         //WorldHand.heightIncrease = 4.0f;
         WorldHand.setHeightIncreaseExtendedForPickup();

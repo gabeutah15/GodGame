@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class OutlineScript : MonoBehaviour
@@ -50,6 +51,13 @@ public class OutlineScript : MonoBehaviour
                 if (this.GetComponentInParent<PickupableNavMeshAgent>())
                 {
                     GameObject pickUpabale = Instantiate(throwableVersionOfObject, this.transform.position, this.transform.rotation);
+                    //shouldnt do so many get components in one place, but it's not in a loop just on picking up the thing
+                    if (pickUpabale.GetComponentInChildren<TextMeshProUGUI>() && this.GetComponentInParent<Peasant>())
+                    {
+                        pickUpabale.GetComponent<MeshRenderer>().material.color = this.GetComponentInParent<Peasant>().village.villageColor;
+                        pickUpabale.GetComponentInChildren<TextMeshProUGUI>().text = this.GetComponentInParent<Peasant>().displayText;
+                    }
+
                     pickupManager.PickupNewNavMeshObject(this.GetComponentInParent<PickupableNavMeshAgent>().gameObject, pickUpabale);
                 }
 
