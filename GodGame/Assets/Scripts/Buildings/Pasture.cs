@@ -5,8 +5,7 @@ using UnityEngine;
 public class Pasture : MonoBehaviour
 {
     Jobs associatedJob = Jobs.Shepherd;
-    int maxWorkers = 1;
-    int minWorkers = 1;
+    
 
     // Start is called before the first frame update
     void Start()

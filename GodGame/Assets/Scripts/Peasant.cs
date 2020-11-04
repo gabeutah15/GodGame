@@ -13,6 +13,7 @@ public enum Ages
 
 public enum Jobs
 {
+    Unemployed,
     Farmer,
     PigFarmer,
     Shepherd,
@@ -47,6 +48,7 @@ public class Peasant : MonoBehaviour
     public Village village;
     MeshRenderer meshRend;
     public TaskTime taskTime;
+    Building workBuilding;
 
     private float dayTimer = 0f;
 
@@ -61,6 +63,7 @@ public class Peasant : MonoBehaviour
         WalkingSpeed = generatedStats.walkingSpeed;
         RunningSpeed = generatedStats.runningSpeed;
         Name = generatedStats.name;
+        Job = generatedStats.job;
         statsDisplay = GetComponentInChildren<TextMeshProUGUI>();
         //assign everything on awake because people will be spawned and killed nad buildings made and destroyed throughout the game
         //need some master list of all player controlled buildings that expands and contracts
@@ -69,11 +72,41 @@ public class Peasant : MonoBehaviour
         agent.speed = WalkingSpeed;
         meshRend = GetComponent<MeshRenderer>();
         meshRend.material.color = village.villageColor;
+        village.Villagers.Add(this);
+
+        foreach (Building building in village.buildingsForThisVillage)
+        {
+            if (building.isWorkBuilding)
+            {
+                if (building.associatedJob == Job)
+                {
+                    if (building.currentNumWorkers < building.maxNumWorkers)
+                    {
+                        workBuilding = building;
+                        building.workers.Add(this);//building will add worker when they arrive? no that is for waypoints because needed only when acrively working, building can track it's workers all teh time
+                        break;
+                    }
+                }
+            }
+        }
+        if (workBuilding)
+        {
+            GoToWork(agent);
+        }
     }
 
-    private void Awake()
+    private void Awake()//awake is before start
     {
         taskTime = (TaskTime)Random.Range(0, 3);//arbitrary 3 because 3 task times currentluy, will need to change later
+        //this sort of thing should probably be in like a time manager, not on each peasant, except it might be good to have them
+        //all on their own time schedules? or maybe a time manager with some randomization
+        //by here the villages building list should be populated
+        
+    }
+
+    public void GoToWork(NavMeshAgent p_agent)
+    {
+        workBuilding.arrivalPoint.AddAgentOnTheWay(p_agent);
     }
 
     private void SetDisplayText()
@@ -82,9 +115,18 @@ public class Peasant : MonoBehaviour
         statsDisplay.text = displayText;
     }
 
+    //bool goneToWork = false;
+
     // Update is called once per frame
     void Update()
     {
+        //if (!goneToWork && dayTimer > 1)
+        //{
+        //    //agent.SetDestination(this.transform.position + new Vector3(10,0,10));//this works, so the agent definitely exists
+        //    //GoToWork(/*this.gameObject.GetComponent<Peasant>()*/);
+        //    goneToWork = true;
+        //}
+
         dayTimer += Time.deltaTime;
         if(dayTimer > 60)
         {

@@ -5,8 +5,7 @@ using UnityEngine;
 public class Farm : MonoBehaviour
 {
     Jobs associatedJob = Jobs.Farmer;
-    int maxWorkers = 4;
-    int minWorkers = 1;
+   
 
 
     // Start is called before the first frame update

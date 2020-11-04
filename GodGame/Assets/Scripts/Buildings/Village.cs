@@ -6,8 +6,8 @@ public class Village : MonoBehaviour
 {
     //track resoruces on the village level
     //track all buildings associated with this village (will need to be expandable list as buildings are added
-    List<Building> buildingsForThisVillage;//village has list of all of its buildings and each building has a reference to it's village, probably ok? mutual reference bad?
-    List<Peasant> Villagers;
+    public List<Building> buildingsForThisVillage;//village has list of all of its buildings and each building has a reference to it's village, probably ok? mutual reference bad?
+    public List<Peasant> Villagers;
     public Color villageColor;
 
     //spawn more vilalgers from here so you can add them to the list
@@ -16,7 +16,8 @@ public class Village : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        Villagers = new List<Peasant>();
+        buildingsForThisVillage = new List<Building>();
     }
 
     // Update is called once per frame

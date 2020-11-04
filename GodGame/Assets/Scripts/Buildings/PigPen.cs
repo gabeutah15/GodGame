@@ -6,8 +6,7 @@ public class PigPen : MonoBehaviour
 {
 
     Jobs associatedJob = Jobs.PigFarmer;
-    int maxWorkers = 2;
-    int minWorkers = 1;
+    
 
     // Start is called before the first frame update
     void Start()

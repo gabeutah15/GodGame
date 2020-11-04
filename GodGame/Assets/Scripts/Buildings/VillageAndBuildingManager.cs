@@ -5,7 +5,6 @@ using UnityEngine;
 public class VillageAndBuildingManager : MonoBehaviour
 {
     Building[] startingBuildings;
-
     List<Building> allbuildings;//expandable list of buildings
     Village[] allVillages;//can be an array because cannot found new villages, only expand existing
 

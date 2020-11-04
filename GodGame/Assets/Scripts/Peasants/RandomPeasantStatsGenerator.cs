@@ -13,6 +13,7 @@ public struct PeasantStats
     public float walkingSpeed;
     public float runningSpeed;
     public string name;
+    public Jobs job;
     //public House House { get; set; }//house and job assigned by buildingmanager? because dependeon on expanding and contracting lists of those
     //public Jobs Job { get; set; }
 }
@@ -115,6 +116,7 @@ public class RandomPeasantStatsGenerator : MonoBehaviour
             stats.runningSpeed = LocomotionSpeeds.ChildRun + randomSpeedModifier;
             stats.walkingSpeed = LocomotionSpeeds.ChildWalk + randomSpeedModifier;
             stats.health = HealthValues.ChildHealth;
+            stats.job = Jobs.Unemployed;
         }
         else if(ageOdds == 4)
         {
@@ -122,6 +124,7 @@ public class RandomPeasantStatsGenerator : MonoBehaviour
             stats.runningSpeed = LocomotionSpeeds.OldRun + randomSpeedModifier;
             stats.walkingSpeed = LocomotionSpeeds.OldWalk + randomSpeedModifier;
             stats.health = HealthValues.OldHealth;
+            stats.job = Jobs.Unemployed;
         }
         else
         {
@@ -129,6 +132,8 @@ public class RandomPeasantStatsGenerator : MonoBehaviour
             stats.runningSpeed = LocomotionSpeeds.AdultRun + randomSpeedModifier;
             stats.walkingSpeed = LocomotionSpeeds.AdultWalk + randomSpeedModifier;
             stats.health = HealthValues.AdultHealth;
+            int test = System.Enum.GetNames(typeof(Jobs)).Length;
+            stats.job = (Jobs)Random.Range(1, System.Enum.GetNames(typeof(Jobs)).Length);//dunno about System.Enum.GetNames but should return number of job names
         }
 
         return stats;
