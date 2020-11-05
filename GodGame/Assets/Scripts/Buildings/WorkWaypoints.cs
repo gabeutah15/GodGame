@@ -8,11 +8,11 @@ public class WorkWaypoints : MonoBehaviour
     [SerializeField]
     Transform[] wayPoints;
     //int destinationIndex;
-    Dictionary<NavMeshAgent, int> peasantNavMeshAgentsCurrentlyWorkingThisField;//will be drawn from villagers assigned this job at this location? or villager just added when they arrive to parent location?
+    Dictionary<NavMeshAgent, int> peasantNavMeshAgentsCurrentlyWorkingThisJob;//will be drawn from villagers assigned this job at this location? or villager just added when they arrive to parent location?
 
     void Start()
     {
-        peasantNavMeshAgentsCurrentlyWorkingThisField = new Dictionary<NavMeshAgent, int>();
+        peasantNavMeshAgentsCurrentlyWorkingThisJob = new Dictionary<NavMeshAgent, int>();
 
     }
 
@@ -32,15 +32,15 @@ public class WorkWaypoints : MonoBehaviour
 
     void Update()
     {
-        List<NavMeshAgent> keys = new List<NavMeshAgent>(peasantNavMeshAgentsCurrentlyWorkingThisField.Keys);//this is probably not performant?
+        List<NavMeshAgent> keys = new List<NavMeshAgent>(peasantNavMeshAgentsCurrentlyWorkingThisJob.Keys);//this is probably not performant?
         foreach (NavMeshAgent agent in keys)
         {
             if (agent.remainingDistance < 1)
             {
-                int destinationIndex = peasantNavMeshAgentsCurrentlyWorkingThisField[agent];//i can alter the values if i am iterating through the keys?
+                int destinationIndex = peasantNavMeshAgentsCurrentlyWorkingThisJob[agent];//i can alter the values if i am iterating through the keys?
                 destinationIndex++;
                 destinationIndex = destinationIndex % wayPoints.Length;
-                peasantNavMeshAgentsCurrentlyWorkingThisField[agent] = destinationIndex;
+                peasantNavMeshAgentsCurrentlyWorkingThisJob[agent] = destinationIndex;
                 GoToDestination(agent, destinationIndex);
             }
         }
@@ -67,11 +67,11 @@ public class WorkWaypoints : MonoBehaviour
     public void AddPeasantNavAgentToWayPointPath(Peasant peasant)
     {
         //for some reason cannot user manual getter and setter or auto property to get navmeshagent from peasant?
-        peasantNavMeshAgentsCurrentlyWorkingThisField.Add(peasant.GetComponent<NavMeshAgent>(), Random.Range(0, wayPoints.Length));//start at random waypoint
+        peasantNavMeshAgentsCurrentlyWorkingThisJob.Add(peasant.GetComponent<NavMeshAgent>(), Random.Range(0, wayPoints.Length));//start at random waypoint
     }
 
     public void RemovePeasantNavAgentFromWayPointPath(Peasant peasant)
     {
-        peasantNavMeshAgentsCurrentlyWorkingThisField.Remove(peasant.GetComponent<NavMeshAgent>());//can remove with just key i think?
+        peasantNavMeshAgentsCurrentlyWorkingThisJob.Remove(peasant.GetComponent<NavMeshAgent>());//can remove with just key i think?
     }
 }
