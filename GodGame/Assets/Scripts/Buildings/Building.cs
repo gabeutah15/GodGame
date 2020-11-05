@@ -62,6 +62,7 @@ public class Building : MonoBehaviour
         {
             //this should mean it's a leisure rout, because houses do not call proces
             //no work waypoints they just go inside/disappear
+            
             peasant.GetComponent<MeshRenderer>().enabled = false;//SetActive(false)//this doens't work because then cannot access again, it's update stops calling, but perhaps if this is handled by
                                                                  //a manager and not the peasants own script later that won't be a problem;//ie like they went inside
             peasant.GetComponent<Collider>().enabled = false;
@@ -74,14 +75,16 @@ public class Building : MonoBehaviour
     {
         if (isWorkBuilding || isLeisureBuilding)
         {
+
             workWayPoints.RemovePeasantNavAgentFromWayPointPath(peasant.GetComponent<Peasant>());//should maybe just be passing this around as a peasant everywhere?
             //they will also need to have new destinations set though? that can be elsewhere, where the time of day changes, tghis just releives them of their waypooints
             //arrivalPoint.RemoveAgentOnTheWay(peasant.GetComponent<NavMeshAgent>());//don't do this here because if in building then not on arrival point
         }
         else if (isHouse)
         {
+            //Don't do below if this is result of being picked up and put down
             peasant.GetComponent<MeshRenderer>().enabled = true;
-            //peasant.GetComponent<Collider>().enabled = true;
+            peasant.GetComponent<Collider>().enabled = true;
             //peasant.GetComponent<NavMeshAgent>().speed = originalSpeed;//***this hacky way of doing this, instead find out why being given more waypoints after reaching house
         }
         else

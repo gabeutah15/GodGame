@@ -8,13 +8,13 @@ public class ArrivalPoint : MonoBehaviour
     Vector3 arrivalPoint;
     List<NavMeshAgent> agentsComingToWorkHere;
     Building associatedBuilding;
-    
+
     // Start is called before the first frame update
     void Awake()//awake is before start, need to initialize these so can assign workers on game start
     {
         agentsComingToWorkHere = new List<NavMeshAgent>();
         associatedBuilding = GetComponentInParent<Building>();
-       
+
 
         arrivalPoint = this.transform.position;
         NavMeshHit myNavHit;
@@ -38,14 +38,18 @@ public class ArrivalPoint : MonoBehaviour
         //    }
         //}
 
-        
+
         for (int i = agentsComingToWorkHere.Count - 1; i >= 0; i--)
         {
             NavMeshAgent agent = agentsComingToWorkHere[i];
-            if (agent.remainingDistance < 1)
+
+            if (agent.isActiveAndEnabled)
             {
-                associatedBuilding.ProcessWorkerOnArrival(agent.gameObject);
-                RemoveAgentOnTheWayAtIndex(i/*agent*//*.gameObject.GetComponent<Peasant>()*/);//need to pass these around just as peasants I think?
+                if (agent.remainingDistance < 1)
+                {
+                    associatedBuilding.ProcessWorkerOnArrival(agent.gameObject);
+                    RemoveAgentOnTheWayAtIndex(i/*agent*//*.gameObject.GetComponent<Peasant>()*/);//need to pass these around just as peasants I think?
+                }
             }
 
 

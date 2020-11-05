@@ -35,13 +35,16 @@ public class WorkWaypoints : MonoBehaviour
         List<NavMeshAgent> keys = new List<NavMeshAgent>(peasantNavMeshAgentsCurrentlyWorkingThisJob.Keys);//this is probably not performant?
         foreach (NavMeshAgent agent in keys)
         {
-            if (agent.remainingDistance < 1)
+            if (agent.isActiveAndEnabled)
             {
-                int destinationIndex = peasantNavMeshAgentsCurrentlyWorkingThisJob[agent];//i can alter the values if i am iterating through the keys?
-                destinationIndex++;
-                destinationIndex = destinationIndex % wayPoints.Length;
-                peasantNavMeshAgentsCurrentlyWorkingThisJob[agent] = destinationIndex;
-                GoToDestination(agent, destinationIndex);
+                if (agent.remainingDistance < 1)
+                {
+                    int destinationIndex = peasantNavMeshAgentsCurrentlyWorkingThisJob[agent];//i can alter the values if i am iterating through the keys?
+                    destinationIndex++;
+                    destinationIndex = destinationIndex % wayPoints.Length;
+                    peasantNavMeshAgentsCurrentlyWorkingThisJob[agent] = destinationIndex;
+                    GoToDestination(agent, destinationIndex);
+                }
             }
         }
 

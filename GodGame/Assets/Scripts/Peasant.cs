@@ -17,7 +17,7 @@ public enum Jobs
     Farmer,
     PigFarmer,
     Shepherd,
-    Worshipper
+    //Worshipper
 }
 
 public enum TaskTime

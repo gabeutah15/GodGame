@@ -22,10 +22,14 @@ public class TestMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(agent.remainingDistance < 1)
+        if (agent.isActiveAndEnabled)
         {
-            currentPos = currentPos == startPos ? endPos : startPos;
-            agent.SetDestination(currentPos);
+            if (agent.remainingDistance < 1)
+            {
+                currentPos = currentPos == startPos ? endPos : startPos;
+                agent.SetDestination(currentPos);
+            }
         }
+
     }
 }
