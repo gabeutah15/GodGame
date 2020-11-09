@@ -5,9 +5,11 @@ using UnityEngine.AI;
 
 public class ArrivalPoint : MonoBehaviour
 {
-    Vector3 arrivalPoint;
+    [HideInInspector]
+    public Vector3 arrivalPoint;
     List<NavMeshAgent> agentsComingToWorkHere;
     Building associatedBuilding;
+    
 
     // Start is called before the first frame update
     void Awake()//awake is before start, need to initialize these so can assign workers on game start

@@ -40,7 +40,10 @@ public class LightingManager : MonoBehaviour
         {
             DirectionalLight.color = Preset.DirectionalColor.Evaluate(timePercent);
 
-            DirectionalLight.transform.localRotation = Quaternion.Euler(new Vector3((timePercent * 360f) - 90f, 170f, 0));
+            //6 and 18 should be clamps
+            //which is 25% and 75%
+            //which is 90 off of each side of 360
+            DirectionalLight.transform.localRotation = Quaternion.Euler(new Vector3( Mathf.Clamp((timePercent * 360f) - 90f,0,180)  , 170f, 0));
         }
 
     }

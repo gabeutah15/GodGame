@@ -4,28 +4,28 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 
-public enum Ages
-{
-    Child,
-    Adult,
-    Old
-}
+//public enum Ages
+//{
+//    Child,
+//    Adult,
+//    Old
+//}
 
-public enum Jobs
-{
-    Unemployed,
-    Farmer,
-    PigFarmer,
-    Shepherd,
-    //Worshipper
-}
+//public enum Jobs
+//{
+//    Unemployed,
+//    Farmer,
+//    PigFarmer,
+//    Shepherd,
+//    //Worshipper
+//}
 
-public enum TaskTime
-{
-    Sleep,
-    Work,
-    Play
-}
+//public enum TaskTime
+//{
+//    Sleep,
+//    Work,
+//    Play
+//}
 
 public class Peasant : MonoBehaviour
 {
@@ -73,7 +73,7 @@ public class Peasant : MonoBehaviour
         agent.speed = WalkingSpeed;
         meshRend = GetComponent<MeshRenderer>();
         meshRend.material.color = village.villageColor;
-        village.Villagers.Add(this);
+        village.villagers.Add(this);
 
         foreach (Building building in village.buildingsForThisVillage)
         {
@@ -83,10 +83,14 @@ public class Peasant : MonoBehaviour
                 {
                     if (building.associatedJob == Job)//this will only work
                     {
-                        if (building.currentNumWorkers < building.maxNumWorkers)
+                        if (building.numWorkersAssignedToThisLocation < building.maxNumWorkersAssignedToThisLocation)
                         {
                             workBuilding = building;
-                            building.workers.Add(this);//building will add worker when they arrive? no that is for waypoints because needed only when acrively working, building can track it's workers all teh time
+                            //building.workers.Add(this);//building will add worker when they 
+                            //arrive? no that is for waypoints because needed only when acrively working, 
+                            //building can track it's workers all teh time
+
+
                             break;
                         }
                     }
@@ -100,7 +104,7 @@ public class Peasant : MonoBehaviour
                     if (house.GetNumOccupants() < house.maxOccupants)
                     {
                         //add an occupant to the house until it is full
-                        house.AddOccupant(this);
+                        //house.AddOccupant(this);//removed because using GPeasantNow
                         homeBuilding = building;
                     }
                 }

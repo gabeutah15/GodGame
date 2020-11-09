@@ -5,11 +5,11 @@ using UnityEngine;
 public class House : MonoBehaviour
 {
     public int maxOccupants;
-    private List<Peasant> occupants;
+    private List<GPeasant> occupants;//from Peasant
     // Start is called before the first frame update
     void Awake()
     {
-        occupants = new List<Peasant>();
+        occupants = new List<GPeasant>();
     }
 
     public int GetNumOccupants()
@@ -17,13 +17,13 @@ public class House : MonoBehaviour
         return occupants.Count;
     }
 
-    public void AddOccupant(Peasant occupant)
+    public void AddOccupant(GPeasant occupant)//from Peasand
     {
         occupants.Add(occupant);
         
     }
 
-    public void RemoveOccupant(Peasant occupant)
+    public void RemoveOccupant(GPeasant occupant)
     {
         occupants.Remove(occupant);
     }

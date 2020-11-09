@@ -13,12 +13,16 @@ public class Building : MonoBehaviour
 
     //public bool isHouse;
     public Jobs associatedJob;
-    public int maxNumWorkers;
-    public int minNumWorkers;
-    public int currentNumWorkers;
+    public int maxNumWorkersAssignedToThisLocation;
+    //public int maxNumWorkersAtOnce;
+    public int minNumWorkersToFunction;
+    [HideInInspector]
+    public int numWorkersAssignedToThisLocation;
     [HideInInspector]
     public WorkWaypoints workWayPoints;
-    public List<Peasant> workers;
+    //public List<Peasant> workers;
+    public List<GPeasant> workers;
+
     [HideInInspector]
     public ArrivalPoint arrivalPoint;
     private bool isHouse;
@@ -27,7 +31,7 @@ public class Building : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        workers = new List<Peasant>();//will be empty for non work buildings, better to have a workBuildings class derived from building? i dunno, there won't be that many buildings, maybe isWorkBuilding bool is enough
+        workers = new List<GPeasant>();//will be empty for non work buildings, better to have a workBuildings class derived from building? i dunno, there won't be that many buildings, maybe isWorkBuilding bool is enough
         arrivalPoint = GetComponentInChildren<ArrivalPoint>();
         workWayPoints = GetComponentInChildren<WorkWaypoints>();
         
